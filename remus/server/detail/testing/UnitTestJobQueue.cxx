@@ -36,11 +36,11 @@ boost::uuids::uuid make_id()
   return generator();
 }
 
-//make a random JobRequest
-remus::client::JobRequest make_jobRequest(remus::MESH_INPUT_TYPE in,
+//make a random JobDataRequest
+remus::client::JobDataRequest make_jobDataRequest(remus::MESH_INPUT_TYPE in,
                                           remus::MESH_OUTPUT_TYPE out)
 {
-  return remus::client::JobRequest( remus::common::MeshIOType(in,out) );
+  return remus::client::JobDataRequest( remus::common::MeshIOType(in,out) );
 }
 
 
@@ -52,8 +52,8 @@ void verify_add_remove_jobs()
   std::vector< boost::uuids::uuid > uuids_used;
   for(int i=0; i < 7; ++i) { uuids_used.push_back(make_id()); }
 
-  remus::client::JobRequest jobReq =
-                            make_jobRequest(remus::RAW_EDGES,remus::MESH3D);
+  remus::client::JobDataRequest jobReq =
+                            make_jobDataRequest(remus::RAW_EDGES,remus::MESH3D);
 
   REMUS_ASSERT( (queue.addJob( uuids_used[0], jobReq ) == true) );
 
@@ -69,9 +69,9 @@ void verify_add_remove_jobs()
   queue.addJob( uuids_used[2], jobReq );
   queue.addJob( uuids_used[3], jobReq );
 
-  queue.addJob( uuids_used[4], make_jobRequest(remus::RAW_EDGES,remus::MESH2D) );
-  queue.addJob( uuids_used[5], make_jobRequest(remus::RAW_EDGES,remus::MESH2D) );
-  queue.addJob( uuids_used[6], make_jobRequest(remus::RAW_EDGES,remus::MESH2D) );
+  queue.addJob( uuids_used[4], make_jobDataRequest(remus::RAW_EDGES,remus::MESH2D) );
+  queue.addJob( uuids_used[5], make_jobDataRequest(remus::RAW_EDGES,remus::MESH2D) );
+  queue.addJob( uuids_used[6], make_jobDataRequest(remus::RAW_EDGES,remus::MESH2D) );
 
   REMUS_ASSERT( (queue.queuedJobTypes().size() == 2) );
   REMUS_ASSERT( (queue.queuedJobTypes().count(worker_type2D) == 1) );
@@ -106,8 +106,8 @@ void verify_dispatch_jobs()
   remus::server::detail::JobQueue queue;
 
   const boost::uuids::uuid j_id = make_id();
-  remus::client::JobRequest jobReq =
-                              make_jobRequest(remus::RAW_EDGES,remus::MESH3D);
+  remus::client::JobDataRequest jobReq =
+                              make_jobDataRequest(remus::RAW_EDGES,remus::MESH3D);
 
   queue.addJob( j_id, jobReq );
 
@@ -120,9 +120,9 @@ void verify_dispatch_jobs()
   queue.addJob( make_id(), jobReq );
   queue.addJob( make_id(), jobReq );
 
-  queue.addJob( make_id(), make_jobRequest(remus::RAW_EDGES,remus::MESH2D) );
-  queue.addJob( make_id(), make_jobRequest(remus::RAW_EDGES,remus::MESH2D) );
-  queue.addJob( make_id(), make_jobRequest(remus::RAW_EDGES,remus::MESH2D) );
+  queue.addJob( make_id(), make_jobDataRequest(remus::RAW_EDGES,remus::MESH2D) );
+  queue.addJob( make_id(), make_jobDataRequest(remus::RAW_EDGES,remus::MESH2D) );
+  queue.addJob( make_id(), make_jobDataRequest(remus::RAW_EDGES,remus::MESH2D) );
 
   REMUS_ASSERT( (queue.queuedJobTypes().size() == 2) );
   REMUS_ASSERT( (queue.queuedJobTypes().count(worker_type2D) == 1) );

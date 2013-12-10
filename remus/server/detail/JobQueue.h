@@ -13,7 +13,7 @@
 #ifndef __remus_server_detail_JobQueue_h
 #define __remus_server_detail_JobQueue_h
 
-#include <remus/client/JobRequest.h>
+#include <remus/client/JobDataRequest.h>
 #include <remus/common/Message.h>
 #include <remus/server/detail/uuidHelper.h>
 #include <remus/worker/Job.h>
@@ -45,7 +45,7 @@ public:
   //Convert a Message and UUID into a WorkerMessage.
   //will return false if the uuid is already queued
   inline bool addJob( const boost::uuids::uuid& id,
-                      const remus::client::JobRequest& request);
+                      const remus::client::JobDataRequest& request);
 
   //Removes a job from the queue of the given mesh type.
   //Return it as a worker Job. We prioritize jobs waiting for
@@ -83,14 +83,14 @@ private:
   struct QueuedJob
   {
     QueuedJob(const boost::uuids::uuid& id,
-              const remus::client::JobRequest& request):
+              const remus::client::JobDataRequest& request):
               Id(id),
               Request(request),
               WorkerDispatchTime(boost::posix_time::second_clock::local_time())
               {}
 
     boost::uuids::uuid Id;
-    remus::client::JobRequest Request;
+    remus::client::JobDataRequest Request;
 
     //information on when the job was marked as scheduled
     boost::posix_time::ptime WorkerDispatchTime;
@@ -150,7 +150,7 @@ private:
 
 //------------------------------------------------------------------------------
 bool JobQueue::addJob(const boost::uuids::uuid &id,
-                      const remus::client::JobRequest& request)
+                      const remus::client::JobDataRequest& request)
 {
   //only add the message as a job if the uuid hasn't been used already
   const bool can_add = QueuedIds.count(id) == 0;

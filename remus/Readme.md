@@ -39,6 +39,8 @@ Todo:
    when reading the file. This can be optional and is used as a way to allow
    JobFileRequest to be used to launch programs easily
 
+   What about multiple request files?
+
 
 2. We need to add a JobDataResult.h and JobFileResult.h to remus::worker, and
    remus::client these allow us to send back a file contents.
@@ -55,6 +57,8 @@ Todo:
     all relative paths will be evaluated based on the current working directory
     when we determine that the server is not local we have to read the file
     and send it along the wire.
+
+    What about multiple result files?
 
 
 3. We need to add real logging to  the server, so that it is easier to enable a

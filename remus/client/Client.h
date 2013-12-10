@@ -17,7 +17,8 @@
 
 #include <remus/client/Job.h>
 #include <remus/client/JobResult.h>
-#include <remus/client/JobRequest.h>
+#include <remus/client/JobDataRequest.h>
+#include <remus/client/JobFileRequest.h>
 #include <remus/client/JobStatus.h>
 
 #include <remus/common/Message.h>
@@ -41,10 +42,12 @@ public:
 
   //Submit a request to the server to see if it support the requirements
   //of a given job request
-  bool canMesh(const remus::client::JobRequest& request);
+  bool canMesh(const remus::client::JobDataRequest& request);
+  bool canMesh(const remus::client::JobFileRequest& request);
 
   //Submit a job to the server.
-  remus::client::Job submitJob(const remus::client::JobRequest& request);
+  remus::client::Job submitJob(const remus::client::JobDataRequest& request);
+  remus::client::Job submitJob(const remus::client::JobFileRequest& request);
 
   //Given a remus Job object returns the status of the job
   remus::client::JobStatus jobStatus(const remus::client::Job& job);

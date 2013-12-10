@@ -3,7 +3,8 @@ project(Remus_Client)
 set(headers
     Client.h
     Job.h
-    JobRequest.h
+    JobDataRequest.h
+    JobFileRequest.h
     JobResult.h
     JobStatus.h
     ServerConnection.h
@@ -11,12 +12,19 @@ set(headers
 
 set(client_srcs
     Client.cxx
+    JobFileRequest.cxx
     )
 
 add_library(RemusClient ${client_srcs} ${headers})
 target_link_libraries(RemusClient
                       LINK_PUBLIC RemusCommon
                       )
+
+#we need to use kwStat to get basic file size information
+#since it is only used inside implementation files no need to install it
+target_include_directories(RemusClient
+                          PRIVATE
+                          ${Remus_SOURCE_DIR}/thirdparty/kwStat)
 
 #create the export header symbol exporting
 remus_export_header(RemusClient ClientExports.h)

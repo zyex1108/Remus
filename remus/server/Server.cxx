@@ -298,8 +298,8 @@ std::string Server::queueJob(const remus::common::Message& msg)
     const boost::uuids::uuid jobUUID = this->UUIDGenerator();
 
     //create a new job to place on the queue
-    const remus::client::JobRequest request =
-                    remus::client::to_JobRequest(msg.data(),msg.dataSize());
+    const remus::client::JobDataRequest request =
+                    remus::client::to_JobDataRequest(msg.data(),msg.dataSize());
 
     this->QueuedJobs->addJob(jobUUID,request);
     //return the UUID

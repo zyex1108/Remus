@@ -25,7 +25,7 @@ Client::Client(const remus::client::ServerConnection &conn):
 }
 
 //------------------------------------------------------------------------------
-bool Client::canMesh(const remus::client::JobRequest& request)
+bool Client::canMesh(const remus::client::JobDataRequest& request)
 {
   //hold as a string so message doesn't have to copy a second time
   const std::string stringRequest(remus::client::to_string(request));
@@ -40,7 +40,39 @@ bool Client::canMesh(const remus::client::JobRequest& request)
 }
 
 //------------------------------------------------------------------------------
-remus::client::Job Client::submitJob(const remus::client::JobRequest& request)
+bool Client::canMesh(const remus::client::JobFileRequest& request)
+{
+  //hold as a string so message doesn't have to copy a second time
+  const std::string stringRequest(remus::client::to_string(request));
+  remus::common::Message j(request.type(),
+                              remus::CAN_MESH,
+                              stringRequest.data(),
+                              stringRequest.size());
+  j.send(this->Server);
+
+  remus::common::Response response(this->Server);
+  return response.dataAs<remus::STATUS_TYPE>() != remus::INVALID_STATUS;
+}
+
+
+//------------------------------------------------------------------------------
+remus::client::Job Client::submitJob(const remus::client::JobDataRequest& request)
+{
+  //hold as a string so message doesn't have to copy a second time
+  const std::string stringRequest(remus::client::to_string(request));
+  remus::common::Message j(request.type(),
+                              remus::MAKE_MESH,
+                              stringRequest.data(),
+                              stringRequest.size());
+  j.send(this->Server);
+
+  remus::common::Response response(this->Server);
+  const std::string job = response.dataAs<std::string>();
+  return remus::client::to_Job(job);
+}
+
+//------------------------------------------------------------------------------
+remus::client::Job Client::submitJob(const remus::client::JobFileRequest& request)
 {
   //hold as a string so message doesn't have to copy a second time
   const std::string stringRequest(remus::client::to_string(request));
